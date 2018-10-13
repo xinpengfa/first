@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wcf.dao.MenuMapper">
+    <resultMap id="findAll" type="com.wcf.entity.Menu">
+        <id column="pid" property="id"/>
+        <result column="pname" property="name"/>
+        <result column="picon" property="icon"/>
+        <result column="pcreatedate" property="createDate"/>
+        <collection property="children" ofType="com.wcf.entity.Menu">
+            <id column="cid" property="id"/>
+            <result column="cname" property="name"/>
+            <result column="cicon" property="icon"/>
+            <result column="ccreatedate" property="createDate"/>
+            <result column="chref" property="href"/>
+        </collection>
+
+    </resultMap>
+    <select id="findAll" resultMap="findAll">
+        select p.id pid,p.name pname,p.icon picon,p.createdate pcreatedate,c.id cid,c.name cname,c.icon cicon,c.createdate ccreatedate,c.href chref
+        from t_menu p
+        left join t_menu c
+        on c.parent_id = p.id
+        where p.parent_id is NULL
+    </select>
+
+</mapper>

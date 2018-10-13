@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wcf.dao.UserMapper">
+    <select id="findByPage" resultType="com.wcf.entity.User">
+        select *
+        from t_user limit #{arg0},#{arg1}
+    </select>
+
+    <select id="findAll" resultType="com.wcf.entity.User">
+        select *
+        from t_user
+    </select>
+
+    <insert id="insert">
+        insert into t_user
+        values(#{id},#{name},#{nikeName},#{password},#{salt},#{sex},#{phone},#{city},#{sign},#{createDate},#{status},#{path})
+    </insert>
+
+    <select id="findCounts" resultType="long">
+        select count(id) from t_user
+    </select>
+
+    <select id="findByColumns" resultType="com.wcf.entity.User">
+        select ${columns}
+        from t_user
+    </select>
+
+    <!--实体类中两个属性必须名为,"name","value",需要映射或者起别名-->
+    <resultMap id="statistic" type="com.wcf.entity.Statistic">
+        <result property="name" column="city" />
+        <result property="value" column="count" />
+    </resultMap>
+
+    <select id="findNumbers" resultMap="statistic">
+        select city, count(*) count from t_user where sex=#{sex} group by city
+    </select>
+
+    <select id="findDays" resultType="long">
+        select DATEDIFF(NOW(),lastTime) from t_user
+    </select>
+
+</mapper>

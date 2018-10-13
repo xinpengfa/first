@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+
+    <!--日志的输出方式-->
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <!--以什么样格式输出-->
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <!--指定日志输出格式-->
+            <pattern>[%p] [%c] [%L] %d{yyyy-MM-dd HH:mm:ss} %m %n</pattern>
+        </layout>
+    </appender>
+
+
+    <!--项目根日志-->
+    <root level="ERROR">
+        <appender-ref ref="stdout"/>
+    </root>
+
+    <!--子日志 包级别日志-->
+    <logger name="com.wcf.dao" level="ERROR"/>
+    <logger name="com.wcf.controller" level="DEBUG"/>
+
+</configuration>

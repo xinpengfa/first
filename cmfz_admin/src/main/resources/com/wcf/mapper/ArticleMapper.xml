@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wcf.dao.ArticleMapper">
+
+    <resultMap id="articleMap" type="com.wcf.entity.Article">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="createdate" property="createDate"/>
+        <result column="text" property="text"/>
+        <result column="type" property="type"/>
+        <result column="img_path" property="img_path"/>
+        <association property="guru" javaType="com.wcf.entity.Guru">
+            <result column="name" property="name"/>
+        </association>
+    </resultMap>
+
+    <select id="findOne" resultMap="articleMap">
+        select a.id, a.title, a.text, a.type, a.createdate, a.type,a.img_path,g.name
+        from t_article a
+        left join t_guru g
+        on a.guru_id = g.id
+        where where a.id=#{id}
+    </select>
+
+    <select id="findByPage" resultMap="articleMap">
+        select a.id, a.title, a.text, a.type, a.createdate, a.type,a.img_path,g.name
+        from t_article a
+        left join t_guru g
+        on a.guru_id = g.id
+        limit #{arg0},#{arg1}
+    </select>
+
+    <select id="findAll" resultMap="articleMap">
+        select a.id, a.title, a.text, a.type, a.createdate, a.type,a.img_path,g.name
+        from t_article a
+        left join t_guru g
+        on a.guru_id = g.id
+    </select>
+
+    <insert id="insert">
+        insert into t_article
+        values(#{id},#{title},sysdate(),#{text},#{type},#{imgPath},#{status},#{guru.id})
+    </insert>
+
+
+
+    <!--<update id="update">
+        update t_article
+        <set>
+            <if test="title!=null">title=#{title},</if>
+            <if test="text!=null">content=#{content},</if>
+            <if test="type!=null">type=#{type},</if>
+            <if test="guru.id!=null">author_id=#{guru.id},</if>
+            <if test="status!=null">status=#{status},</if>
+        </set>
+        where id=#{id}
+    </update>-->
+
+    <select id="findCounts" resultType="long">
+        select count(id) from t_article
+    </select>
+</mapper>
